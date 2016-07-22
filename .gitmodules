@@ -1,0 +1,3 @@
+[submodule "service_brokers/go_service_broker"]
+	path = service_brokers/go_service_broker
+	url = https://github.com/simonleung8/go_service_broker
