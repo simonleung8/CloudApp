@@ -4,3 +4,18 @@
 [submodule "apps/pong_matcher_go"]
 	path = apps/pong_matcher_go
 	url = https://github.com/simonleung8/pong_matcher_go
+[submodule "apps/spring-music"]
+	path = apps/spring-music
+	url = https://github.com/cloudfoundry-samples/spring-music
+[submodule "service_brokers/echo-service-broker"]
+	path = service_brokers/echo-service-broker
+	url = https://github.com/simonleung8/cf-service-broker-python
+[submodule "apps/echo"]
+	path = apps/echo
+	url = https://github.com/simonleung8/cf-echo-service
+[submodule "logging-route-service"]
+	path = logging-route-service
+	url = https://github.com/simonleung8/logging-route-service
+[submodule "apps/sample-app-nodejs"]
+	path = apps/sample-app-nodejs
+	url = https://github.com/simonleung8/cf-sample-app-nodejs
