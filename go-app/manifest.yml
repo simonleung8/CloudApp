@@ -1,0 +1,6 @@
+---
+applications:
+- memory: 256M
+  env:
+    app_id: this_is_not_a_test
+
