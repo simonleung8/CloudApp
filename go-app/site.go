@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"time"
 )
 
 type apps_json struct {
@@ -29,6 +28,8 @@ type env struct {
 }
 
 func main() {
+	// time.Sleep(5 * time.Second)
+
 	http.HandleFunc("/", start)
 	fmt.Println("listening...")
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
@@ -38,8 +39,6 @@ func main() {
 }
 
 func start(res http.ResponseWriter, req *http.Request) {
-	time.Sleep(5 * time.Second)
-
 	cd, err := os.Getwd()
 	if err != nil {
 		fmt.Println("Error getting current director:", err)
@@ -66,40 +65,40 @@ func start(res http.ResponseWriter, req *http.Request) {
 		os.Exit(1)
 	}
 
-	out, err = exec.Command(cd+"/bin/cf", "api", "api.bosh-lite.com", "--skip-ssl-validation").Output()
+	out, err = exec.Command(cd+"/bin/cf", "login", "-a", "api.bosh-lite.com", "-u", "admin", "-p", "admin", "--skip-ssl-validation").Output()
 	fmt.Fprintln(res, "Output is:", string(out))
 	if err != nil {
 		fmt.Println("Error running cf command2", err)
 		os.Exit(1)
 	}
 
-	out, err = exec.Command(cd+"/bin/cf", "auth", "admin", "admin").Output()
-	fmt.Fprintln(res, "Output is:", string(out))
-	if err != nil {
-		fmt.Println("Error running cf command3", err)
-		os.Exit(1)
-	}
+	// out, err = exec.Command(cd+"/bin/cf", "auth", "admin", "admin").Output()
+	// fmt.Fprintln(res, "Output is:", string(out))
+	// if err != nil {
+	// 	fmt.Println("Error running cf command3", err)
+	// 	os.Exit(1)
+	// }
 
-	out, err = exec.Command(cd+"/bin/cf", "create-org", "temp").Output()
-	fmt.Fprintln(res, "Output is:", string(out))
-	if err != nil {
-		fmt.Println("Error running cf command4", err)
-		os.Exit(1)
-	}
+	// out, err = exec.Command(cd+"/bin/cf", "create-org", "temp").Output()
+	// fmt.Fprintln(res, "Output is:", string(out))
+	// if err != nil {
+	// 	fmt.Println("Error running cf command4", err)
+	// 	os.Exit(1)
+	// }
 
-	out, err = exec.Command(cd+"/bin/cf", "create-space", "temp", "-o", "temp").Output()
-	fmt.Fprintln(res, "Output is:", string(out))
-	if err != nil {
-		fmt.Println("Error running cf command5", err)
-		os.Exit(1)
-	}
+	// out, err = exec.Command(cd+"/bin/cf", "create-space", "temp", "-o", "temp").Output()
+	// fmt.Fprintln(res, "Output is:", string(out))
+	// if err != nil {
+	// 	fmt.Println("Error running cf command5", err)
+	// 	os.Exit(1)
+	// }
 
-	out, err = exec.Command(cd+"/bin/cf", "target", "-o", "temp", "-s", "temp").Output()
-	fmt.Fprintln(res, "Output is:", string(out))
-	if err != nil {
-		fmt.Println("Error running cf command6", err)
-		os.Exit(1)
-	}
+	// out, err = exec.Command(cd+"/bin/cf", "target", "-o", "temp", "-s", "temp").Output()
+	// fmt.Fprintln(res, "Output is:", string(out))
+	// if err != nil {
+	// 	fmt.Println("Error running cf command6", err)
+	// 	os.Exit(1)
+	// }
 
 	out, err = exec.Command(cd+"/bin/cf", "curl", "v2/apps").Output()
 	fmt.Fprintln(res, "Output is:", string(out))
