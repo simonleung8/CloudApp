@@ -11,7 +11,7 @@ func main() {
 	time.Sleep(5 * time.Second)
 	setup()
 	http.HandleFunc("/", hello)
-	fmt.Println("listening...")
+	fmt.Println("Starting server, listening...")
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 	if err != nil {
 		panic(err)

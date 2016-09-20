@@ -39,29 +39,20 @@ func setup() {
 		os.Exit(1)
 	}
 
-	var guid, name string
+	var guid string
 	var health_check_timeout int
 	for _, app := range apps.Resources {
 		if app.Entity.Env.AppID == "this_is_not_a_test" {
 			guid = app.Metadata.Guid
-			name = app.Entity.Name
 			health_check_timeout = app.Entity.HealthCheckTimeout
 			break
 		}
 	}
 
-	fmt.Println("NAME:", name)
-	fmt.Println("HC:", health_check_timeout)
 	if health_check_timeout == 0 {
 		out, err = exec.Command(cd+"/bin/cf", "curl", "v2/apps/"+guid, "-X", "PUT", "-d", `'{"health_check_timeout":2}'`).Output()
 		if err != nil {
 			fmt.Println("Error running cf command8", err)
-			os.Exit(1)
-		}
-
-		out, err = exec.Command(cd+"/bin/cf", "set-env", name, "done", "1").Output()
-		if err != nil {
-			fmt.Println("Error running cf command9", err)
 			os.Exit(1)
 		}
 
