@@ -2,42 +2,23 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"os/exec"
 )
 
 func setup() {
 	cd, err := os.Getwd()
-	if err != nil {
-		fmt.Println("Error getting current director:", err)
-		os.Exit(1)
-	}
+	catch(err, "Error getting current directory")
 
-	out, err := exec.Command(cd+"/bin/cf", "--version").Output()
-	if err != nil {
-		fmt.Println("Error running cf command1", err)
-		os.Exit(1)
-	}
+	catch(exec.Command(cd+"/bin/cf", "--version").Run(), "cf --version")
 
-	out, err = exec.Command(cd+"/bin/cf", "login", "-a", "api.bosh-lite.com", "-u", "admin", "-p", "admin", "--skip-ssl-validation").Output()
-	if err != nil {
-		fmt.Println("Error running cf command2", err)
-		os.Exit(1)
-	}
+	catch(exec.Command(cd+"/bin/cf", "login", "-a", "api.bosh-lite.com", "-u", "admin", "-p", "admin", "--skip-ssl-validation").Run(), "cf login")
 
-	out, err = exec.Command(cd+"/bin/cf", "curl", "v2/apps").Output()
-	if err != nil {
-		fmt.Println("Error running cf command7", err)
-		os.Exit(1)
-	}
+	out, err := exec.Command(cd+"/bin/cf", "curl", "v2/apps").Output()
+	catch(err, "Error running cf command7")
 
 	var apps apps_json
-	err = json.Unmarshal(out, &apps)
-	if err != nil {
-		fmt.Println("Error unmarshaling", err)
-		os.Exit(1)
-	}
+	catch(json.Unmarshal(out, &apps), "Error unmarshaling")
 
 	var guid string
 	var health_check_timeout int
@@ -51,11 +32,14 @@ func setup() {
 
 	if health_check_timeout == 0 {
 		out, err = exec.Command(cd+"/bin/cf", "curl", "v2/apps/"+guid, "-X", "PUT", "-d", `'{"health_check_timeout":2}'`).Output()
-		if err != nil {
-			fmt.Println("Error running cf command8", err)
-			os.Exit(1)
-		}
+		catch(err, "Error running cf command8")
 
 		os.Exit(0)
+	}
+}
+
+func catch(err error, comment string) {
+	if err != nil {
+		panic(err.Error() + " - " + comment)
 	}
 }
