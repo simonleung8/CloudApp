@@ -1,0 +1,5 @@
+---
+applications:
+- name: debugging-app-exercise
+  instances: 1
+  memory: 128M
